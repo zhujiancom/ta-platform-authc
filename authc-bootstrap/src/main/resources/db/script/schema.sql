@@ -1,0 +1,1 @@
+create database ta_platform_authc default character set utf8mb4 collate utf8mb4_general_ci;

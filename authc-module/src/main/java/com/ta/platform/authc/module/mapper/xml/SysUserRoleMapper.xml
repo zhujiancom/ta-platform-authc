@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ta.platform.authc.module.mapper.SysUserRoleMapper">
+    <select id="getUserListByRoleId" parameterType="String" resultType="com.ta.platform.authc.module.vo.SysRoleUserMapModel">
+		SELECT
+		       t1.id as id
+			,t1.role_id as roleId
+		,t1.user_id as userId
+		,t2.username as userName
+		,t2.realname as realName
+		,t2.status as status
+		,t2.work_no as workNo
+		FROM t_sys_user_role t1 left join t_sys_user t2
+		on t1.user_id = t2.id
+		WHERE t1.role_id = #{roleId, jdbcType=VARCHAR}
+    </select>
+</mapper>

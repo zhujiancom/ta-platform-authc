@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <modules>
+        <module>authc-framework</module>
+        <module>authc-bootstrap</module>
+        <module>authc-config</module>
+        <module>authc-module</module>
+        <module>authc-api</module>
+    </modules>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.5.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.ta.platform.authc</groupId>
+    <artifactId>ta-platform-authc</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>ta-platform-authc</name>
+    <description>用户权限管理服务</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <fastjson.version>1.2.67</fastjson.version>
+        <tax-toolset.version>1.0.18</tax-toolset.version>
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
+        <platform-version>0.0.1-SNAPSHOT</platform-version>
+        <mapstruct.version>1.3.1.Final</mapstruct.version>
+        <guava.version>28.2-android</guava.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+        <maven-versions-plugin.version>2.2</maven-versions-plugin.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.ey.tax.toolset</groupId>
+                <artifactId>tax-toolset</artifactId>
+                <version>${tax-toolset.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!--JWT-->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>3.7.0</version>
+            </dependency>
+
+            <!--shiro-->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring-boot-starter</artifactId>
+                <version>1.4.0</version>
+            </dependency>
+            <!-- shiro-redis -->
+            <dependency>
+                <groupId>org.crazycake</groupId>
+                <artifactId>shiro-redis</artifactId>
+                <version>3.1.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.shiro</groupId>
+                        <artifactId>shiro-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>3.3.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ta.platform</groupId>
+                <artifactId>ta-platform-common</artifactId>
+                <version>${platform-version}</version>
+            </dependency>
+
+            <!-- 对象属性复制 https://mapstruct.org/ -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.ey.tax.toolset</groupId>
+            <artifactId>tax-toolset-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun Repository</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <!-- 打包时跳过测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <additionalOptions>
+                        <additionalOption>-Xdoclint:none</additionalOption>
+                    </additionalOptions>
+                    <!-- 打包时跳过 -->
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 版本统一管理插件 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>${maven-versions-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>

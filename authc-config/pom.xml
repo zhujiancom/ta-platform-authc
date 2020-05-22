@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ta-platform-authc</artifactId>
+        <groupId>com.ta.platform.authc</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>authc-config</artifactId>
+
+    <name>authc-config</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ta.platform</groupId>
+            <artifactId>ta-platform-common</artifactId>
+        </dependency>
+    </dependencies>
+</project>

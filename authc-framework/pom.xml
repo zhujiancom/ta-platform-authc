@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ta-platform-authc</artifactId>
+        <groupId>com.ta.platform.authc</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>authc-framework</artifactId>
+
+    <name>authc-framework</name>
+
+    <dependencies>
+        <!--JWT-->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+        </dependency>
+
+        <!--shiro-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring-boot-starter</artifactId>
+        </dependency>
+        <!-- shiro-redis -->
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ta.platform.authc</groupId>
+            <artifactId>authc-config</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+</project>
