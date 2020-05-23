@@ -58,9 +58,9 @@ public class JwtRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         log.info("===============Shiro权限认证开始============ [ roles、permissions]==========");
 
-        JwtToken jwtToken = (JwtToken) principals.getPrimaryPrincipal();
+        LoginUserVo loginUserVo = (LoginUserVo) principals.getPrimaryPrincipal();
 
-        String username = jwtToken.getUsername();
+        String username = loginUserVo.getUsername();
         //从redis中获取登录用户的角色和权限信息
         LoginUserRedisVo loginUserRedisVo = loginReidsService.getLoginSysUserRedisVo(username);
         // 设置角色

@@ -1,8 +1,8 @@
 <template>
     <div id="app">
         <div v-if="!network">
-            <h3>������������</h3>
-            <div @click="onRefresh">ˢ��</div>
+            <h3>请检查网络连接</h3>
+            <div @click="onRefresh">刷新</div>
         </div>
         <router-view></router-view>
     </div>
@@ -43,7 +43,7 @@
             })
         },
         methods: {
-            // ͨ����תһ����ҳ���ٷ��صķ�ʽ��ʵ��ˢ�µ�ǰҳ�����ݵ�Ŀ��
+            // 通过跳转一个空页面再返回的方式来实现刷新当前页面数据的目的
             onRefresh() {
                 this.$router.replace("/refresh")
             }

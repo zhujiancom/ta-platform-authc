@@ -40,7 +40,7 @@ Vue.use(Antd)
 Vue.use(VueAxios, router)
 Vue.use(Storage, storageOptions)
 
-// Vue.prototype.$api = api; // ��api���ص�vue��ԭ����
+//Vue.prototype.$api = api; // 将api挂载到vue的原型上
 
 new Vue({
     router,

@@ -65,12 +65,14 @@
             </a-table>
         </div>
         <permission-modal ref="modalForm" @ok="modalSubmit"></permission-modal>
+        <permission-data-rule ref="permissionDataRule"></permission-data-rule>
     </a-card>
 </template>
 <script>
     import {ListMixin} from "../../mixins/ListMixin";
     import authority from "../../api/services/authority-api";
     import PermissionModal from "./modal/PermissionModal";
+    import PermissionDataRule from "./modal/PermissionDataRule";
 
     const columns = [
         {
@@ -116,6 +118,7 @@
     export default {
         name: 'PermissionList',
         components:{
+            PermissionDataRule,
             PermissionModal
         },
         data() {
@@ -150,10 +153,13 @@
                 this.expandedRowKeys = expandedRows
             },
             handleAddSub(record) {
-                console.log(record)
+                this.$refs.modalForm.title = "添加子菜单";
+                this.$refs.modalForm.localMenuType = 1;
+                this.$refs.modalForm.disableSubmit = false;
+                this.$refs.modalForm.edit({status:'1',permsType:'1',route:true,'parentId':record.id});
             },
             handleDataRule(record) {
-                console.log(record)
+                this.$refs.permissionDataRule.edit(record)
             }
         }
     }
