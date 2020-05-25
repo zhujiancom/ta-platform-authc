@@ -20,9 +20,12 @@
                     :selectedKeys="selectedKeys"
                     :expendedKeys="expandedKeys"
                     :checkStrictly="checkStrictly"
+                    :show-icon="false"
                 >
-                    <span slot="hasDataRule" slot-scope="{slotTitle, ruleFlag}">
-                        {{slotTitle}}<a-icon v-if="ruleFlag" type="align-left" style="margin-left:5px;color: red;"></a-icon>
+                    <span slot="hasDataRule" slot-scope="{icon, slotTitle, ruleFlag}">
+                        <a-icon v-if="icon" :type="icon"/>
+                        {{slotTitle}}
+                        <a-icon v-if="ruleFlag" type="align-left" style="margin-left:5px;color: red;"></a-icon>
                     </span>
                 </a-tree>
             </a-form-item>
@@ -52,35 +55,127 @@
     </a-drawer>
 </template>
 <script>
+    import authority from "../../../api/services/authority-api";
+
     export default {
         name:'RolePermissionModal',
         data() {
             return {
                 title: '角色权限配置',
+                roleId: '',
                 visible: false,
+                loading: false,
                 treeData:[],
                 checkedKeys:[],
                 selectedKeys:[],
                 expandedKeys:[],
-                checkStrictly: true
+                checkStrictly: true,
+                autoExpandParent: true,
+            }
+        },
+        watch:{
+            visible(){
+                if(this.visible){
+                    this.loadData()
+                }
             }
         },
         methods:{
             close(){
-
+                this.reset()
+                this.$emit('close');
+                this.visible = false
             },
-            onCheck(){
-
+            reset(){
+                this.expandedKeys = []
+                this.checkedKeys = []
+                this.defaultCheckedKeys = []
+                this.loading = false
             },
-            onExpand(){
-
+            onCheck(o){
+                if(this.checkStrictly){
+                    this.checkedKeys = o.checked
+                }else{
+                    this.checkedKeys = o
+                }
             },
-            onTreeNodeSelect(){
-
+            onExpand(expandedKeys){
+                this.expandedKeys = expandedKeys;
+            },
+            show(roleId){
+                this.roleId = roleId
+                this.visible = true
+            },
+            onTreeNodeSelect(id){
+                if(id && id.length > 0){
+                    this.selectedKeys = id
+                }
+                // this.$refs.datarule.show(this.selectedKeys[0], this.roleId)
+            },
+            loadData(){
+                let that = this
+                authority.getPermissionTreeList().then((res)=>{
+                    that.treeData = res.data.treeNodes
+                    // console.log("that.treeData = ", that.treeData)
+                    this.allTreeKeys = res.data.ids
+                    authority.getPermissionsByRole({roleId: that.roleId}).then((res)=>{
+                        this.checkedKeys = [...res.data]
+                        this.defaultCheckedKeys = [...res.data]
+                        this.expandedKeys = this.allTreeKeys
+                    })
+                })
             },
             handleSubmit(closeable){
-                console.log(closeable)
-            }
+                let that = this
+                let params = {
+                    roleId: that.roleId,
+                    permissionIds: that.checkedKeys.join(","),
+                    lastPermissionIds:that.defaultCheckedKeys.join(",")
+                }
+                that.loading = true
+                console.log("请求参数：", params)
+                authority.saveRolePermission(params).then((res)=>{
+                    if(res.success){
+                        that.$message.success(res.message)
+                        that.loading = false
+                        if(closeable){
+                            that.close()
+                        }
+                    }else{
+                        that.$message.error(res.message)
+                        that.loading = false
+                        if(closeable){
+                            that.close()
+                        }
+                    }
+                    that.loadData()
+                })
+            },
+            expandAll () {
+                this.expandedKeys = this.allTreeKeys
+                console.log("展开所有节点后：", this.expandedKeys)
+            },
+            closeAll () {
+                this.expandedKeys = []
+                console.log("关闭所有节点后：", this.expandedKeys)
+            },
+            checkALL () {
+                this.checkedKeys = this.allTreeKeys
+            },
+            cancelCheckALL () {
+                //this.checkedKeys = this.defaultCheckedKeys
+                this.checkedKeys = []
+            },
+            switchCheckStrictly (v) {
+                if(v==1){
+                    this.checkStrictly = false
+                }else if(v==2){
+                    this.checkStrictly = true
+                }
+            },
+            handleCancel () {
+                this.close()
+            },
         }
     }
 </script>

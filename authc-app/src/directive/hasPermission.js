@@ -27,7 +27,7 @@ export function filterNodePermission(el, binding, vnode){
     console.log("流程节点页面权限--NODE--");
     let permissionList = []
     try{
-        let obj = vnode.context.$props.formData
+        let obj = vnode.context.formData
         if(obj){
             let bpmList = obj.permissionList
             for(let bpm of bpmList){

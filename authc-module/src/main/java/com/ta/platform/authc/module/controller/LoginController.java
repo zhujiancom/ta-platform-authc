@@ -37,13 +37,8 @@ public class LoginController {
     @ApiOperation("登录接口")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Result<LoginUserTokenVo> login(@RequestBody SysLoginModel sysLoginModel){
-        try {
-            LoginUserTokenVo loginSysUserTokenVo = loginService.login(sysLoginModel);
-            return Result.ok(loginSysUserTokenVo);
-        } catch (Exception e) {
-            log.error(e.getMessage(),e);
-            return Result.error(ApiCode.LOGIN_EXCEPTION,null);
-        }
+        LoginUserTokenVo loginSysUserTokenVo = loginService.login(sysLoginModel);
+        return Result.ok(loginSysUserTokenVo);
     }
 
     /**

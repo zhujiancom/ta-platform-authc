@@ -130,6 +130,7 @@ CREATE TABLE t_sys_user  (
                              `update_by` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '更新人',
                              `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
                              `identity` tinyint(1) NULL DEFAULT NULL COMMENT '身份（1普通成员 2上级）',
+                             `super_user` tinyint(1) NULL DEFAULT NULL COMMENT '超级管理员（0非超级管理员， 1超级管理员）, 不考虑权限问题',
                              PRIMARY KEY (`id`) USING BTREE,
                              UNIQUE INDEX `index_user_name`(`username`) USING BTREE,
                              UNIQUE INDEX `uniq_sys_user_work_no`(`work_no`) USING BTREE,

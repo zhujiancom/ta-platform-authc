@@ -148,6 +148,11 @@ public class SysUser implements Serializable {
      */
     private Integer identity;
 
+    /**
+     * 是否超级管理员， 如果是， 则不考虑权限
+     */
+    private Integer superUser;
+
     @TableField(exist = false)
     private List<SysUserDepVo> departments;
 }

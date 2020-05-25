@@ -7,6 +7,8 @@ import com.ta.platform.authc.module.vo.SysDepartTreeModel;
 import com.ta.platform.common.service.ITreeModelBuildCallback;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 /**
  * Creator: zhuji
  * Date: 5/7/2020
@@ -25,7 +27,7 @@ public class DepartTreeModelBuilder implements ITreeModelBuildCallback<SysDepart
     }
 
     @Override
-    public SysDepartTreeModel build(SysDepart src) {
+    public SysDepartTreeModel build(SysDepart src, Map<String, Object> parameter) {
         SysDepartTreeModel tree = SysDepartTreeModel.builder()
                 .id(src.getId())
                 .key(src.getId())

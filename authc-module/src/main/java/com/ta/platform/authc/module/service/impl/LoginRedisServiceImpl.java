@@ -62,7 +62,6 @@ public class LoginRedisServiceImpl implements ILoginRedisService {
         return (LoginUserRedisVo) redisTemplate.opsForValue().get(String.format(CommonRedisKey.LOGIN_USER, username));
     }
 
-    //TODO 错误
     @Override
     public boolean exists(String token) {
         if (token == null) {

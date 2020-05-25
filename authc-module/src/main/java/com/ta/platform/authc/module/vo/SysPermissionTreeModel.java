@@ -3,7 +3,10 @@ package com.ta.platform.authc.module.vo;
 import com.ta.platform.common.aspect.annotation.Dict;
 import com.ta.platform.common.aspect.annotation.DictSupport;
 import com.ta.platform.common.system.model.TreeModel;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Date;

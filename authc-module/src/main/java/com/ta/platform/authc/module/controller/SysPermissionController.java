@@ -3,30 +3,41 @@ package com.ta.platform.authc.module.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ey.tax.toolset.core.StrUtil;
+import com.ey.tax.toolset.core.collection.CollectionUtil;
 import com.ta.platform.authc.module.entity.SysPermission;
+import com.ta.platform.authc.module.entity.SysRolePermission;
+import com.ta.platform.authc.module.service.ILoginRedisService;
 import com.ta.platform.authc.module.service.ISysPermissionService;
+import com.ta.platform.authc.module.service.ISysRolePermissionService;
 import com.ta.platform.authc.module.service.treebuild.PermissionTreeModelBuilder;
 import com.ta.platform.authc.module.util.PermissionDataUtil;
 import com.ta.platform.authc.module.vo.SysPermissionTreeModel;
 import com.ta.platform.common.api.ApiCode;
 import com.ta.platform.common.api.vo.Result;
 import com.ta.platform.common.constant.CommonConstant;
+import com.ta.platform.common.system.model.TreeModel;
 import com.ta.platform.common.tool.DictHelper;
 import com.ta.platform.common.tool.JwtUtil;
 import com.ta.platform.common.tool.TreeModelUtil;
+import com.ta.platform.common.vo.LoginUserRedisVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +56,13 @@ public class SysPermissionController {
     private ISysPermissionService permissionService;
 
     @Autowired
+    private ISysRolePermissionService rolePermissionService;
+
+    @Autowired
     private PermissionTreeModelBuilder permissionTreeModelBuildCallback;
+
+    @Autowired
+    private ILoginRedisService loginRedisService;
 
     /**
      * 加载用户菜单和权限
@@ -63,7 +80,18 @@ public class SysPermissionController {
             log.info(StrUtil.format(" ------ 通过令牌获取用户拥有的访问菜单 ---- TOKEN[{}] ", token));
 
             String username = JwtUtil.getUsername(token);
-            List<SysPermission> metaList = permissionService.queryByUser(username);
+            LoginUserRedisVo loginUserRedisVo = loginRedisService.getLoginSysUserRedisVo(username);
+            List<SysPermission> metaList = new ArrayList<>();
+            if(loginUserRedisVo.getSuperUser() == 1){
+                // 所有权限
+                // 查询所有权限
+                LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<>();
+                query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
+                query.orderByAsc(SysPermission::getSortNo);
+                metaList = permissionService.list(query);
+            }else{
+                metaList = permissionService.queryByUser(username);
+            }
             if (!PermissionDataUtil.hasHomePage(metaList)) {
                 SysPermission homepageMenu = permissionService.list(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::isHomepage, 1)).get(0);
                 metaList.add(homepageMenu);
@@ -78,7 +106,7 @@ public class SysPermissionController {
             JSONArray authJsonArray = new JSONArray();
             getAuthJsonArray(authJsonArray, metaList);
 
-            // 查询所有权限
+            // 查询所有按钮权限
             LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<>();
             query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
             query.eq(SysPermission::getMenuType, CommonConstant.MENU_TYPE_2);
@@ -103,6 +131,7 @@ public class SysPermissionController {
 
             return Result.ok(json, "加载权限信息成功");
         } catch (Exception e) {
+            log.error(e.getMessage(),e);
             return Result.error(ApiCode.FAIL.getCode(), "加载权限信息失败:" + e.getMessage());
         }
     }
@@ -176,7 +205,10 @@ public class SysPermissionController {
             query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
             query.orderByAsc(SysPermission::getSortNo);
             List<SysPermission> list = permissionService.list(query);
-            List<SysPermissionTreeModel> treeList = TreeModelUtil.getTreeModelList(list, null, permissionTreeModelBuildCallback);
+            Map<String, Object> parameter = new HashMap<>();
+//            parameter.put("title", "hasDataRule");
+//            parameter.put("a-tree", false);
+            List<SysPermissionTreeModel> treeList = TreeModelUtil.getTreeModelList(list, null, permissionTreeModelBuildCallback,parameter);
             List<JSONObject> realTreeList = treeList.stream().map(item -> DictHelper.parseDictField(item)).collect(Collectors.toList());
             return Result.ok(realTreeList);
         } catch (Exception e) {
@@ -221,5 +253,43 @@ public class SysPermissionController {
             log.error(e.getMessage(), e);
             return Result.error();
         }
+    }
+
+    /**
+     * 查询角色树形列表
+     * @return
+     */
+    @GetMapping(value = "/queryTreeList")
+    public Result queryTreeList(){
+        List<String> ids = new ArrayList<>();
+        LambdaQueryWrapper<SysPermission> query = new LambdaQueryWrapper<SysPermission>();
+        query.eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0);
+        query.orderByAsc(SysPermission::getSortNo);
+        List<SysPermission> list = permissionService.list(query);
+        for (SysPermission sysPer : list) {
+            ids.add(sysPer.getId());
+        }
+        Map<String,Object> parameter = new HashMap<>();
+        List<SysPermissionTreeModel> treeNodes = TreeModelUtil.getTreeModelList(list, null, permissionTreeModelBuildCallback,parameter);
+        Map<String, Object> result = new HashMap<>();
+        result.put("treeNodes", treeNodes);
+        result.put("ids", ids);
+
+        return Result.ok(result);
+    }
+
+    /**
+     * 查询角色授权
+     * @param roleId
+     * @return
+     */
+    @GetMapping(value = "/queryPermissionsByRole")
+    public Result<List<String>> queryPermissionsByRole(@RequestParam(name = "roleId") String roleId){
+        List<SysRolePermission> list = rolePermissionService.list(new QueryWrapper<SysRolePermission>().lambda().eq(SysRolePermission::getRoleId, roleId));
+        if(CollectionUtil.isNotEmpty(list)){
+            List<String> result = list.stream().map(rp -> String.valueOf(rp.getPermissionId())).collect(Collectors.toList());
+            return Result.ok(result);
+        }
+        return Result.ok(new ArrayList<>());
     }
 }

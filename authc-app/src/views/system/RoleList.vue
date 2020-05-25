@@ -82,6 +82,7 @@
         <role-modal ref="modalForm" @ok="modalSubmit"></role-modal>
 <!--        <role-user-map-list ref="userList"></role-user-map-list>-->
         <role-user-map-list-mixin ref="userList"></role-user-map-list-mixin>
+        <role-permission-modal ref="rolePermissionList"></role-permission-modal>
     </a-card>
 </template>
 <script>
@@ -89,10 +90,12 @@
     import moment from "moment";
     import RoleModal from "./modal/RoleModal";
     import RoleUserMapListMixin from "./RoleUserMapListMixin";
+    import RolePermissionModal from "./modal/RolePermissionModal";
 
     export default {
         name: 'RoleList',
         components: {
+            RolePermissionModal,
             RoleUserMapListMixin,
             RoleModal
         },
@@ -159,7 +162,7 @@
                 this.$refs.userList.loadUsers(record)
             },
             handlePermission(id) {
-                this.$refs.modalUserRole.show(id);
+                this.$refs.rolePermissionList.show(id);
             },
         }
     }

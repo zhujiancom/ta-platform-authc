@@ -85,6 +85,10 @@
                         <a-input placeholder="请输入座机" v-decorator="[ 'telephone', validationRules.telephone]"/>
                     </a-form-item>
 
+                    <a-form-item label="超级管理员" :labelCol="labelCol" :wrapperCol="wrapperCol">
+                        <a-switch checkedChildren="超级管理员" unCheckedChildren="普通用户" @change="onChoose" v-model="visibleCheck"/>
+                    </a-form-item>
+
             </a-form>
         </a-spin>
     </a-modal>
@@ -109,6 +113,7 @@
                 confirmLoading: false,
                 visible: false,
                 disableSubmit: false,
+                visibleCheck: false,
                 form: this.$form.createForm(this),
                 model: {},
                 identity:"1",
@@ -180,7 +185,7 @@
         },
         watch:{
             model(){
-                this.form.setFieldsValue(pick(this.model,'username','sex','realname','email','phone','workNo','telephone'))
+                this.form.setFieldsValue(pick(this.model,'username','sex','realname','email','phone','workNo','telephone','superUser'))
                 this.fileList = this.model.avatar
             }
         },
@@ -188,7 +193,7 @@
             moment,
             add () {
                 this.refresh()
-                this.edit({activitiSync:'1'});
+                this.edit({activitiSync:'1',superUser:'0'});
             },
             edit(record){
                 console.log("record = ", record)
@@ -266,6 +271,7 @@
                         console.log("result model = ", res.data.model)
                         that.model = res.data.model
                         that.selectedRole = res.data.selectedRole
+                        that.visibleCheck = (that.model.superUser == 1) ? true : false;
                         that.$message.success(res.message)
                     }else{
                         that.$message.warning(res.message)
@@ -394,9 +400,18 @@
                     this.departIdShow=true;
                 }
             },
+            onChoose(checked){
+                if (checked) {
+                    this.model.superUser = 1;
+                    this.visibleCheck = true;
+                } else {
+                    this.model.superUser = 0;
+                    this.visibleCheck = false;
+                }
+            }
         }
     }
 </script>
-<style scoped>
-    @import '~@assets/less/common.less'
-</style>
+<!--<style scoped>-->
+<!--    @import '~@assets/less/common.less'-->
+<!--</style>-->

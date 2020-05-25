@@ -37,7 +37,7 @@
                         :wrapperCol="wrapperCol"
                         label="是否启用"
                         hasFeedback>
-                    <a-switch checkedChildren="启用" unCheckedChildren="禁用" @change="onChose" v-model="visibleCheck"/>
+                    <a-switch checkedChildren="启用" unCheckedChildren="禁用" @change="onChoose" v-model="visibleCheck"/>
                 </a-form-item>
             </a-form>
         </a-spin>
@@ -136,7 +136,7 @@
                 this.mode = {}
                 this.$emit('close')
             },
-            onChose(checked){
+            onChoose(checked){
                 if (checked) {
                     this.status = 1;
                     this.visibleCheck = true;

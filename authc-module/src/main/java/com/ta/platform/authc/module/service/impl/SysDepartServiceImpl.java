@@ -60,7 +60,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 			}
 		}
 		// 调用wrapTreeDataToTreeList方法生成树状数据
-		List<SysDepartTreeModel> listResult = TreeModelUtil.getTreeModelList(listDepts, null, departTreeModelBuilder);
+		List<SysDepartTreeModel> listResult = TreeModelUtil.getTreeModelList(listDepts, null, departTreeModelBuilder, new HashMap<>());
 		return listResult;
 	}
 
@@ -74,7 +74,7 @@ public class SysDepartServiceImpl extends ServiceImpl<SysDepartMapper, SysDepart
 		query.eq(SysDepart::getDelFlag, CommonConstant.DEL_FLAG_0.toString());
 		query.orderByAsc(SysDepart::getDepartOrder);
 		List<SysDepart> list = this.list(query);
-		List<SysDepartTreeModel> listResult = TreeModelUtil.getTreeModelList(list, null, departTreeModelBuilder);
+		List<SysDepartTreeModel> listResult = TreeModelUtil.getTreeModelList(list, null, departTreeModelBuilder, new HashMap<>());
 		return listResult;
 	}
 

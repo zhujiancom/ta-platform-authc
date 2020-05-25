@@ -106,8 +106,6 @@ public class JwtFilter extends AuthenticatingFilter {
         boolean allowed = false;
         try {
             allowed = executeLogin(request, response);
-        } catch (IllegalStateException e) { //not found any token
-            log.error("Token不能为空", e);
         } catch (Exception e) {
             log.error("访问错误", e);
         }

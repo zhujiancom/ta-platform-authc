@@ -1,5 +1,5 @@
 -- init user admin
-INSERT INTO `t_sys_user` VALUES ('e9ca23d68d884d4ebb19d07889727dae', 'admin', '管理员', 'f8d85c06254a543f', 'RCGTeGiH', 'tmp/favicon_1587556662510.ico', '2018-12-05 00:00:00', '1', '11@qq.com', '18566666661', 'A01', '1', '0', '1', null, null,null,'admin','2038-06-21 17:54:10', 'admin', '2019-05-20 15:59:56',2);
+INSERT INTO `t_sys_user` VALUES ('e9ca23d68d884d4ebb19d07889727dae', 'admin', '管理员', 'f8d85c06254a543f', 'RCGTeGiH', 'tmp/favicon_1587556662510.ico', '2018-12-05 00:00:00', '1', '11@qq.com', '18566666661', 'A01', '1', '0', '1', null, null,null,'admin','2038-06-21 17:54:10', 'admin', '2019-05-20 15:59:56',2,1);
 -- init role
 INSERT INTO `t_sys_role` VALUES ('f6817f48af4fb3af11b9e8bf182f618b', '管理员', 'admin', '管理员', NULL, '2018-12-21 18:03:39', 'admin', '2019-05-20 11:40:26');
 INSERT INTO `t_sys_user_role` VALUES ('f72c6190b0722e798147e73c776c6ac9', 'e9ca23d68d884d4ebb19d07889727dae', 'f6817f48af4fb3af11b9e8bf182f618b');
@@ -51,6 +51,7 @@ INSERT INTO `t_sys_dict` VALUES ('1255407453084905473', '菜单类型', 'menu_ty
 INSERT INTO `t_sys_dict` VALUES ('1255407964324425730', '优先级', 'priority', '优先级：L-低；M- 中；H-高', 0, 'admin', '2020-04-29 16:05:58', NULL, NULL, 0);
 INSERT INTO `t_sys_dict` VALUES ('1255408379711516673', '发布状态', 'publish_state', '发布状态：0-未发布；1-已发布；2-已撤销', 0, 'admin', '2020-04-29 16:07:37', NULL, NULL, 0);
 INSERT INTO `t_sys_dict` VALUES ('1255413638802542594', '用户状态', 'user_status', '1-正常；2-冻结', 0, 'admin', '2020-04-29 16:28:31', NULL, NULL, 1);
+INSERT INTO `t_sys_dict` VALUES ('1263793473710997505', '表单权限策略', 'form_perms_type', '1: 可见(未授权不可见); 2: 可编辑(未授权禁用)', 0, 'admin', '2020-05-22 19:26:59', NULL, NULL, 0);
 
 -- ----------------------------
 -- Records of t_sys_dict_item
@@ -82,4 +83,6 @@ INSERT INTO `t_sys_dict_item` VALUES ('1255408466843987970', '125540837971151667
 INSERT INTO `t_sys_dict_item` VALUES ('1255408503367987201', '1255408379711516673', '已撤销', '2', '', 3, 1, 'admin', '2020-04-29 16:08:06', NULL, NULL);
 INSERT INTO `t_sys_dict_item` VALUES ('1255413675339124737', '1255413638802542594', '正常', '1', '', 1, 1, 'admin', '2022-04-29 16:28:39', 'admin', '2020-04-29 16:28:58');
 INSERT INTO `t_sys_dict_item` VALUES ('1255413723397459970', '1255413638802542594', '冻结', '2', '', 2, 1, 'admin', '2020-04-29 16:28:51', NULL, NULL);
+INSERT INTO `t_sys_dict_item` VALUES ('1263793556087128065', '1263793473710997505', '可编辑(未授权禁用)', '2', '', 2, 1, 'admin', '2020-05-22 19:27:19', NULL, NULL);
+INSERT INTO `t_sys_dict_item` VALUES ('1263793603864444930', '1263793473710997505', '可见(未授权不可见)', '1', '', 1, 1, 'admin', '2022-03-22 19:27:30', 'admin', '2020-05-24 16:09:49');
 
