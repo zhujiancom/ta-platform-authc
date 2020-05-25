@@ -53,7 +53,7 @@
 
         <!-- 操作按钮区域 -->
         <div class="table-operator" style="border-top: 5px">
-            <a-button @click="doAdd" type="primary" icon="plus">添加用户</a-button>
+            <a-button @click="doAdd" v-has="'user:create'" type="primary" icon="plus">添加用户</a-button>
             <a-button type="primary" icon="download">导出</a-button>
             <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader">
                 <a-button type="primary" icon="import">导入</a-button>

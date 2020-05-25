@@ -26,6 +26,7 @@ import {
     DEFAULT_MULTI_PAGE,
     DEFAULT_THEME
 } from "./store/mutation-types";
+import hasPermission from "./directive/hasPermission";
 
 Vue.config.productionTip = false
 
@@ -39,6 +40,7 @@ const storageOptions = {
 Vue.use(Antd)
 Vue.use(VueAxios, router)
 Vue.use(Storage, storageOptions)
+Vue.use(hasPermission)
 
 //Vue.prototype.$api = api; // 将api挂载到vue的原型上
 

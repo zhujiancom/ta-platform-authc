@@ -99,8 +99,8 @@ service.interceptors.request.use(config => {
 })
 
 service.interceptors.response.use((response) => {
-    console.log("response = ", response)
-    console.log("response.headers = ", response.headers)
+    // console.log("response = ", response)
+    // console.log("response.headers = ", response.headers)
     return response.data
 }, err)
 
