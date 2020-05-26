@@ -44,10 +44,8 @@ router.beforeEach((to, from, next) => {
                             // 跳转到目标路由
                             next({path: redirect})
                         }
-                        // next({path: redirect})
                     })
-                })
-                    .catch((err)=>{
+                }).catch((err)=>{
                         console.log(err)
                         notification.error({
                             message: '系统提示',

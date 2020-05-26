@@ -32,6 +32,7 @@ public class DepartTreeModelBuilder implements ITreeModelBuildCallback<SysDepart
                 .id(src.getId())
                 .key(src.getId())
                 .value(src.getId())
+                .label(src.getDepartName())
                 .title(src.getDepartName())
                 .disableCheckbox(!ConvertUtil.toBool(src.getStatus(), false))
                 .build();

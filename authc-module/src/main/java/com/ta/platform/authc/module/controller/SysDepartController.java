@@ -91,8 +91,8 @@ public class SysDepartController {
     public Result<Object> queryTreeList() {
         try {
             List<SysDepartTreeModel> list = sysDepartService.queryTreeList();
-            return Result.ok(list);
-//            return Result.ok(JSON.toJSONString(list),"加载部门数据树形结构成功！");
+//            return Result.ok(list);
+            return Result.ok(JSON.toJSONString(list),"加载部门数据树形结构成功！");
         } catch (Exception e) {
             log.error(e.getMessage(),e);
             return Result.error(ApiCode.FAIL.getCode(), e.getMessage());

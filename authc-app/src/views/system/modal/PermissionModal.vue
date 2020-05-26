@@ -192,17 +192,21 @@
                 },
                 iconChooseVisible: false,
                 validateStatus:"",
-                validationRules:{
-                    name:{rules: [{ required: true, message: '请输入菜单标题!' }]},
-                    component:{rules: [{ required: this.show, message: '请输入前端组件!' }]},
-                    url:{rules: [{ required: this.show, message: '请输入菜单路径!' }]},
-                    permsType:{rules: [{ required: true, message: '请输入授权策略!' }]},
-                    sortNo:{initialValue:1.0},
-                }
             }
         },
         created() {
             this.resetScreenSize()
+        },
+        computed:{
+            validationRules:function(){
+                return {
+                    name: {rules: [{required: true, message: '请输入菜单标题!'}]},
+                    component: {rules: [{required: this.show, message: '请输入前端组件!'}]},
+                    url: {rules: [{required: this.show, message: '请输入菜单路径!'}]},
+                    permsType: {rules: [{required: true, message: '请输入授权策略!'}]},
+                    sortNo: {initialValue: 1.0}
+                }
+            }
         },
         methods:{
             loadTree(){
@@ -224,7 +228,7 @@
                 this.edit({status:'1',permsType:'1',route:true});
             },
             edit(record){
-                console.log("record",record)
+                // console.log("record",record)
                 this.resetScreenSize(); // 调用此方法,根据屏幕宽度自适应调整抽屉的宽度
                 this.form.resetFields();
                 this.model = Object.assign({}, record);

@@ -24,7 +24,7 @@ const err = (error) => {
         let data = error.response.data
         const token = Vue.ls.get(ACCESS_TOKEN)
         console.log("---------异常响应---------", token);
-        console.log("---------异常响应---------",error.response.status)
+        console.log("---------异常响应---------",error.response)
         switch (error.response.status) {
             case 403:
                 notification.error({message: '系统提示', description: '拒绝访问', duration: 4})
@@ -45,7 +45,7 @@ const err = (error) => {
                         }
                     })
                 }else{
-                    notification.error({message: '系统提示', description: data.message, duration: 5})
+                    notification.error({message: '系统提示', description: error.response.statusText, duration: 5})
                 }
                 break
             case 404:

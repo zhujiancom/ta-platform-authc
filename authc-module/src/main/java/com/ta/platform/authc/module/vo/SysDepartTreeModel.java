@@ -2,6 +2,7 @@ package com.ta.platform.authc.module.vo;
 
 import com.ta.platform.common.system.model.TreeModel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Date;
  */
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class SysDepartTreeModel extends TreeModel<SysDepartTreeModel> {
     private String id;
 
@@ -61,4 +63,5 @@ public class SysDepartTreeModel extends TreeModel<SysDepartTreeModel> {
     private String updateBy;
 
     private Date updateTime;
+
 }

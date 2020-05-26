@@ -17,7 +17,6 @@ import com.ta.platform.authc.module.vo.SysPermissionTreeModel;
 import com.ta.platform.common.api.ApiCode;
 import com.ta.platform.common.api.vo.Result;
 import com.ta.platform.common.constant.CommonConstant;
-import com.ta.platform.common.system.model.TreeModel;
 import com.ta.platform.common.tool.DictHelper;
 import com.ta.platform.common.tool.JwtUtil;
 import com.ta.platform.common.tool.TreeModelUtil;
@@ -28,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -94,7 +94,7 @@ public class SysPermissionController {
             }
             if (!PermissionDataUtil.hasHomePage(metaList)) {
                 SysPermission homepageMenu = permissionService.list(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::isHomepage, 1)).get(0);
-                metaList.add(homepageMenu);
+                metaList.add(0, homepageMenu);
             }
 
             JSONObject json = new JSONObject();
@@ -291,5 +291,19 @@ public class SysPermissionController {
             return Result.ok(result);
         }
         return Result.ok(new ArrayList<>());
+    }
+
+    @PostMapping(value = "/saveRolePermission")
+    public Result<Boolean> saveRolePermission(@RequestBody JSONObject json){
+        try {
+            String roleId = json.getString("roleId");
+            String permissionIds = json.getString("permissionIds");
+            String lastPermissionIds = json.getString("lastpermissionIds");
+            rolePermissionService.saveRolePermission(roleId, permissionIds, lastPermissionIds);
+            return Result.ok("授权成功");
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return Result.error("授权失败");
+        }
     }
 }

@@ -10,4 +10,12 @@ import com.ta.platform.authc.module.entity.SysRolePermission;
  * Description:
  */
 public interface ISysRolePermissionService extends IService<SysRolePermission> {
+
+    /**
+     * 保存授权 将上次的权限和这次作比较 差异处理提高效率
+     * @param roleId
+     * @param permissionIds
+     * @param lastPermissionIds
+     */
+    void saveRolePermission(String roleId, String permissionIds, String lastPermissionIds);
 }

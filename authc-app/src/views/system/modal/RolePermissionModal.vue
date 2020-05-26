@@ -18,7 +18,7 @@
                     @expand="onExpand"
                     @select="onTreeNodeSelect"
                     :selectedKeys="selectedKeys"
-                    :expendedKeys="expandedKeys"
+                    :expandedKeys="expandedKeys"
                     :checkStrictly="checkStrictly"
                     :show-icon="false"
                 >
@@ -71,6 +71,7 @@
                 expandedKeys:[],
                 checkStrictly: true,
                 autoExpandParent: true,
+                allTreeKeys: [],
             }
         },
         watch:{
@@ -117,11 +118,11 @@
                 authority.getPermissionTreeList().then((res)=>{
                     that.treeData = res.data.treeNodes
                     // console.log("that.treeData = ", that.treeData)
-                    this.allTreeKeys = res.data.ids
+                    that.allTreeKeys = res.data.ids
                     authority.getPermissionsByRole({roleId: that.roleId}).then((res)=>{
-                        this.checkedKeys = [...res.data]
-                        this.defaultCheckedKeys = [...res.data]
-                        this.expandedKeys = this.allTreeKeys
+                        that.checkedKeys = [...res.data]
+                        that.defaultCheckedKeys = [...res.data]
+                        that.expandedKeys = that.allTreeKeys
                     })
                 })
             },
