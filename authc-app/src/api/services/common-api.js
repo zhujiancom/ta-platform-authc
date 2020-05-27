@@ -12,6 +12,9 @@ const commonAPI = {
     addDictItem:(parameter)=>postAction("/core/dict/item/add", parameter),
     editDictItem:(parameter)=>putAction("/core/dict/item/edit", parameter),
     deleteDictItem:(parameter)=>postAction("/core/dict/item/delete", parameter),
+    publishAnnouncement:(parameter)=>getAction("/core/notice/publish", parameter),
+    revokeAnnouncement:(parameter)=>getAction("/core/notice/revoke", parameter),
+    readNoticeByUser:(parameter)=>putAction("/core/notice/read", parameter),
 }
 
 export default commonAPI

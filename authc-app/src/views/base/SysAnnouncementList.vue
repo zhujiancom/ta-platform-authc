@@ -104,6 +104,7 @@
 <script>
     import {ListMixin} from "../../mixins/ListMixin";
     import SysAnnouncementModal from "./modal/SysAnnouncementModal";
+    import commonAPI from "../../api/services/common-api";
 
     const columns = [
         {
@@ -149,7 +150,7 @@
         {
             title: '发布时间',
             align: "center",
-            dataIndex: 'sendTime'
+            dataIndex: 'publishTime'
         },
         {
             title: '撤销时间',
@@ -173,14 +174,13 @@
         data() {
             return {
                 description: '系统通告管理页面',
+                loadingMode: 'immediate',
                 queryParam: {},
                 columns,
                 url: {
                     list: "/core/notice/list",
                     delete: "/core/notice/delete",
-                    deleteBatch: "/sys/notice/deleteBatch",
-                    releaseDataUrl: "/sys/notice/doReleaseData",
-                    revokeDataUrl: "sys/notice/doRevokeData",
+                    deleteBatch: "/core/notice/deleteBatch",
                     exportXlsUrl: "sys/notice/exportXls",
                     importExcelUrl: "sys/notice/importExcel",
                 }
@@ -188,20 +188,37 @@
         },
         computed: {
             importExcelUrl: function () {
-                return `${window._CONFIG['domianURL']}/${this.url.importExcelUrl}`;
+                return `${window._CONFIG['domainURL']}/${this.url.importExcelUrl}`;
             }
         },
         methods: {
             // 发布通告
             doPublish: function (id) {
-                console.log("--- publish announce id : " + id)
+                // console.log("--- publish announce id : " + id)
+                let that = this
+                commonAPI.publishAnnouncement({id: id}).then((res)=>{
+                    if(res.success){
+                        that.$message.success(res.message)
+                        that.loadData(1)
+                    }else{
+                        that.$message.warning(res.message)
+                    }
+                })
             },
             doRevoke: function (id) {
-                console.log("--- revoke announce id : ", id)
+                let that = this
+                commonAPI.revokeAnnouncement({id: id}).then((res) => {
+                    if(res.success){
+                        that.$message.success(res.message)
+                        that.loadData(1)
+                    }else{
+                        that.$message.warning(res.message)
+                    }
+                })
             },
         }
     }
 </script>
-<style scoped>
-    @import '~@assets/less/common.less'
-</style>
+<!--<style scoped>-->
+<!--    @import '~@assets/less/common.less'-->
+<!--</style>-->

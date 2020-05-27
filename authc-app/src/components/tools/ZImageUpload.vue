@@ -43,7 +43,7 @@
         name:'ZImageUpload',
         data() {
             return {
-                uploadAction: window._CONFIG['domianURL']+'/sys/file/upload',
+                uploadAction: window._CONFIG['domainURL']+'/sys/file/upload',
                 urlView:window._CONFIG['staticDomainURL'],
                 uploadLoading: false,
                 picUrl: false,

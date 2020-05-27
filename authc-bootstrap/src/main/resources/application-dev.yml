@@ -6,7 +6,7 @@ taplatform:
     enable: true
     anon:
       - /sys/login,/sys/logout,/sys/mLogin,/sys/sms,/sys/phoneLogin
-      - /api/auth/**
+      - /api/**
       - /sys/user/checkOnlyUser,/sys/randomImage/**,/sys/getCheckCode
       - /sys/user/register
       # pdf 预览
