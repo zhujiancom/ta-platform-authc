@@ -49,6 +49,17 @@
                         </a-select>
                     </a-form-item>
 
+                <!--部门分配-->
+                <a-form-item label="部门分配" :labelCol="labelCol" :wrapperCol="wrapperCol" v-show="!departDisabled">
+                    <a-input-search
+                            placeholder="点击选择部门"
+                            v-model="checkedDepartNameString"
+                            readOnly
+                            @search="onSearch">
+                        <a-button slot="enterButton" icon="search">选择</a-button>
+                    </a-input-search>
+                </a-form-item>
+
                     <a-form-item label="身份" :labelCol="labelCol" :wrapperCol="wrapperCol">
                         <a-radio-group
                                 v-model="identity"
@@ -91,6 +102,7 @@
 
             </a-form>
         </a-spin>
+        <depart-window ref="departWindow" @ok="modalFormOk"></depart-window>
     </a-modal>
 </template>
 <script>
@@ -103,19 +115,23 @@
     import ZDictView from "../../../components/tools/ZDictView";
     import ZImageUpload from "../../../components/tools/ZImageUpload";
     import authorityAPI from "../../../api/services/authority-api";
+    import DepartWindow from "./DepartWindow";
 
     export default {
         name: 'UserModal',
-        components: {ZImageUpload, ZDictView},
+        components: {DepartWindow, ZImageUpload, ZDictView},
         data() {
             return {
                 title: '操作',
                 confirmLoading: false,
+                departDisabled: false,
                 visible: false,
                 disableSubmit: false,
                 visibleCheck: false,
                 form: this.$form.createForm(this),
                 model: {},
+                checkedDepartNames:[], // 保存部门的名称 =>title
+                checkedDepartNameString:"", // 保存部门的名称 =>title
                 identity:"1",
                 headers:{},
                 departIdShow: false,
@@ -125,6 +141,7 @@
                 roleDisabled: false,
                 roleList: [],
                 selectedRole: [],
+                selectedDepartIds: [],
                 labelCol: {
                     xs: {span: 24},
                     sm: {span: 6},
@@ -226,6 +243,7 @@
                         formData.identity=this.identity
                         formData.avatar = this.fileList
                         formData.selectedroles = this.selectedRole.length>0?this.selectedRole.join(","):''
+                        formData.selecteddeparts = this.selectedDepartIds.lenght>0?this.selectedDepartIds.join(","):''
                         let obj
                         if(!this.model.id){
                             formData.id = this.userId
@@ -408,6 +426,19 @@
                     this.model.superUser = 0;
                     this.visibleCheck = false;
                 }
+            },
+            onSearch(){
+                this.$refs.departWindow.add(this.checkedDepartKeys,this.userId);
+            },
+            modalFormOk(formData){
+                this.checkedDepartNameString = '';
+
+                for (let i = 0; i < formData.departList.length; i++) {
+                    this.selectedDepartIds.push(formData.departList[i].key);
+                    this.checkedDepartNames.push(formData.departList[i].title);
+                    this.checkedDepartNameString = this.checkedDepartNames.join(",");
+                }
+                this.checkedDepartKeys = this.selectedDepartIds  //更新当前的选择keys
             }
         }
     }
